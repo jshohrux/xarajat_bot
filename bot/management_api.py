@@ -1,11 +1,12 @@
 import io
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
 from django.core.management import call_command
+from asgiref.sync import sync_to_async
 
 
-def _run_command(command, *args, **kwargs):
+@sync_to_async
+def _run(command, *args, **kwargs):
     stdout = io.StringIO()
     stderr = io.StringIO()
     try:
@@ -24,35 +25,35 @@ def _run_command(command, *args, **kwargs):
 
 
 @csrf_exempt
-@require_http_methods(['POST'])
-def cmd_migrate(request):
-    result = _run_command('migrate')
-    return JsonResponse(result)
+async def cmd_migrate(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    return JsonResponse(await _run('migrate'))
 
 
 @csrf_exempt
-@require_http_methods(['POST'])
-def cmd_setwebhook(request):
-    result = _run_command('setwebhook')
-    return JsonResponse(result)
+async def cmd_setwebhook(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    return JsonResponse(await _run('setwebhook'))
 
 
 @csrf_exempt
-@require_http_methods(['POST'])
-def cmd_delete_webhook(request):
-    result = _run_command('setwebhook', delete=True)
-    return JsonResponse(result)
+async def cmd_delete_webhook(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    return JsonResponse(await _run('setwebhook', delete=True))
 
 
 @csrf_exempt
-@require_http_methods(['POST'])
-def cmd_createsu(request):
-    result = _run_command('createsu')
-    return JsonResponse(result)
+async def cmd_createsu(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    return JsonResponse(await _run('createsu'))
 
 
 @csrf_exempt
-@require_http_methods(['POST'])
-def cmd_collectstatic(request):
-    result = _run_command('collectstatic', interactive=False)
-    return JsonResponse(result)
+async def cmd_collectstatic(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    return JsonResponse(await _run('collectstatic', interactive=False))
