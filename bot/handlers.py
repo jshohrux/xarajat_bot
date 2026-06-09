@@ -12,7 +12,6 @@ from .models import TelegramUser, TelegramGroup, Expense
 def _is_group(chat) -> bool:
     return chat.type in ('group', 'supergroup')
 
-
 @sync_to_async
 def _get_or_create_user(tg_user) -> TelegramUser:
     user, _ = TelegramUser.objects.get_or_create(
