@@ -15,3 +15,5 @@ services:
         sync: false
       - key: ALLOWED_HOSTS
         sync: false
+      - key: API_TOKEN
+        sync: false

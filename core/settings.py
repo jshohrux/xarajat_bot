@@ -21,6 +21,7 @@ load_dotenv(BASE_DIR / '.env')
 BOT_TOKEN = os.getenv('BOT_TOKEN', '')
 WEBHOOK_URL = os.getenv('WEBHOOK_URL', '')
 WEBHOOK_SECRET = os.getenv('WEBHOOK_SECRET', '')
+API_TOKEN = os.getenv('API_TOKEN', '')
 
 
 # Quick-start development settings - unsuitable for production
