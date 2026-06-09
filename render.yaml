@@ -2,7 +2,7 @@ services:
   - type: web
     name: xarajat-bot
     runtime: python
-    buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput
+    buildCommand: pip install -r requirements.txt && python manage.py migrate && python manage.py collectstatic --noinput && python manage.py createsu
     startCommand: uvicorn core.asgi:application --host 0.0.0.0 --port $PORT
     envVars:
       - key: DJANGO_SETTINGS_MODULE
