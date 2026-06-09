@@ -5,6 +5,7 @@ from telegram.ext import (
     CallbackQueryHandler, filters, ContextTypes,
 )
 from django.conf import settings
+from django.utils.timezone import localtime
 from asgiref.sync import sync_to_async
 from .models import TelegramUser, TelegramGroup, Expense
 
@@ -193,7 +194,7 @@ async def list_expenses(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lines = [title]
     for e in expenses:
         desc = f" — {e.description}" if e.description else ''
-        date = e.created_at.strftime('%d.%m %H:%M')
+        date = localtime(e.created_at).strftime('%d.%m %H:%M')
         who = f" [{e.user.full_name or e.user.username}]" if group else ''
         lines.append(f"#{e.id} | {e.amount:,.0f} so'm{desc}{who} | {date}")
 
@@ -319,7 +320,7 @@ async def my_expenses(update: Update, context: ContextTypes.DEFAULT_TYPE):
     lines = [header]
     for e in expenses:
         desc = f"  📝 {e.description}" if e.description else ''
-        date = e.created_at.strftime('%d.%m.%Y %H:%M')
+        date = localtime(e.created_at).strftime('%d.%m.%Y %H:%M')
         group_label = '' if group else (f"  🏠 {e.group.title}" if e.group else '  💬 Shaxsiy')
         lines.append(f"#{e.id} | {e.amount:,.0f} so'm\n  📅 {date}{group_label}{desc}")
 

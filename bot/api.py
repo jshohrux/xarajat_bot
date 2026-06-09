@@ -1,5 +1,6 @@
 import json
 from django.http import JsonResponse
+from django.utils.timezone import localtime
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.db.models import Sum
@@ -29,7 +30,7 @@ def expense_list(request):
             'description': e.description,
             'user': e.user.full_name or e.user.username,
             'group': e.group.title if e.group else None,
-            'created_at': e.created_at.strftime('%Y-%m-%d %H:%M'),
+            'created_at': localtime(e.created_at).strftime('%Y-%m-%d %H:%M'),
         }
         for e in qs
     ]
